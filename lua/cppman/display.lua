@@ -44,7 +44,7 @@ local function cppman(keyword)
     local avail = -1
     for i = 1, vim.fn.winnr('$') do
       local nr = vim.fn.winbufnr(i)
-      if vim.fn.getbufvar(nr, 'cppman', '') ~= '' then
+      if vim.b[nr].cppman then
         avail = i
       end
     end
@@ -71,9 +71,6 @@ local function cppman(keyword)
 
     local content = vim.split(r.stdout, '\n')
     local win = vim.api.nvim_get_current_win()
-    local winset = function(name, value)
-      vim.api.nvim_set_option_value(name, value, { win = win })
-    end
 
     local page_uri = 'man://cppman/' .. keyword
     local buf = -1
@@ -85,28 +82,28 @@ local function cppman(keyword)
     if buf < 0 then
       buf = vim.api.nvim_create_buf(false, true)
     end
-    local bufset = function(name, value)
-      vim.api.nvim_set_option_value(name, value, { buf = buf })
-    end
 
-    bufset('buftype', 'nofile')
-    bufset('swapfile', false)
-    bufset('bufhidden', 'hide')
-    bufset('ft', 'man')
-    bufset('readonly', false)
-    bufset('modifiable', true)
+    local bo = vim.bo[buf]
+    local wo = vim.wo[win]
+
+    bo.buftype = 'nofile'
+    bo.swapfile = false
+    bo.bufhidden = 'hide'
+    bo.ft = 'man'
+    bo.readonly = false
+    bo.modifiable = true
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
     vim.api.nvim_buf_set_name(buf, page_uri)
-    bufset('readonly', true)
-    bufset('modifiable', false)
-    vim.fn.setbufvar(buf, 'cppman', true)
+    bo.readonly = true
+    bo.modifiable = false
+    vim.b[buf].cppman = true
 
     vim.api.nvim_win_set_buf(win, buf)
-    winset('number', false)
-    winset('relativenumber', false)
-    winset('signcolumn', 'no')
-    winset('colorcolumn', '0')
-    winset('statuscolumn', '')
+    wo.number = false
+    wo.relativenumber = false
+    wo.signcolumn = 'no'
+    wo.colorcolumn = '0'
+    wo.statuscolumn = ''
 
     setup_highlight()
 
