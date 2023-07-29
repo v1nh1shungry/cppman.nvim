@@ -69,6 +69,6 @@ require('cppman').setup {
 
   - [ ] MacOS
 
-  - [ ] Platform check: if the platform is not yet supported then give a warning.
+  - [x] Platform check: if the platform is not yet supported then give a warning.
 
 - [ ] Compatibility check. For example, `statuscolumn` is available in a recent version.
