@@ -1,14 +1,14 @@
-*cppman.nvim.txt*           For NVIM 0.9.0           Last change: 2023 July 29
+*cppman.nvim.txt*          For NVIM >= 0.9.0         Last change: 2023 July 29
 
 ==============================================================================
 Table of Contents                              *cppman.nvim-table-of-contents*
 
 1. cppman.nvim                                       |cppman.nvim-cppman.nvim|
-2. Showcase                                             |cppman.nvim-showcase|
-3. Features                                             |cppman.nvim-features|
-4. Installation                                     |cppman.nvim-installation|
-5. Configuration                                   |cppman.nvim-configuration|
-6. Usage                                                   |cppman.nvim-usage|
+  - Features                                |cppman.nvim-cppman.nvim-features|
+  - Requirements                        |cppman.nvim-cppman.nvim-requirements|
+  - Installation                        |cppman.nvim-cppman.nvim-installation|
+  - Configuration                      |cppman.nvim-cppman.nvim-configuration|
+  - Usage                                      |cppman.nvim-cppman.nvim-usage|
 
 ==============================================================================
 1. cppman.nvim                                       *cppman.nvim-cppman.nvim*
@@ -16,17 +16,12 @@ Table of Contents                              *cppman.nvim-table-of-contents*
 Search and view the cppreference <https://en.cppreference.com/> manuals on the
 fly, in your favorite editor!
 
-**NOTE**: Currently only **Linux** is supported.
-
-
-==============================================================================
-2. Showcase                                             *cppman.nvim-showcase*
+**NOTE**Currently only **Linux** is supported.
 
 
 
 
-==============================================================================
-3. Features                                             *cppman.nvim-features*
+FEATURES                                    *cppman.nvim-cppman.nvim-features*
 
 - View the manuals right inside the neovim.
 - Search in all manuals on the fly. What you can expect from a vscode extension
@@ -36,8 +31,7 @@ fly, in your favorite editor!
     `<cword>`.
 
 
-==============================================================================
-4. Installation                                     *cppman.nvim-installation*
+REQUIREMENTS                            *cppman.nvim-cppman.nvim-requirements*
 
 1. neovim >= 0.9. I haven’t had a chance to get a accurate version. I do disable
 `statuscolumn` in the plugin and don’t check the version, and `statuscolumn`
@@ -56,7 +50,11 @@ get it from `<cppman-install-directory>/lib/index.db`) and place it in
 3. Make sure `cppman` is available in `$PATH`.
 
 
-4. lazy.nvim <https://github.com/folke/lazy.nvim>
+
+
+INSTALLATION                            *cppman.nvim-cppman.nvim-installation*
+
+lazy.nvim <https://github.com/folke/lazy.nvim>
 
 >lua
     {
@@ -70,10 +68,7 @@ get it from `<cppman-install-directory>/lib/index.db`) and place it in
 <
 
 
-
-
-==============================================================================
-5. Configuration                                   *cppman.nvim-configuration*
+CONFIGURATION                          *cppman.nvim-cppman.nvim-configuration*
 
 >lua
     -- default
@@ -86,30 +81,24 @@ get it from `<cppman-install-directory>/lib/index.db`) and place it in
     }
 <
 
-**NOTE**: even if you set `index_db_path`, `$XDG_CACHE_HOME/cppman/index.db`
-will be used if it exists, because this one is more likely to be the latest.
-When you run `cppman -r`, `cppman` will rebuild the index database and store it
-in `$XDG_CACHE_HOME/cppman/index.db`. The index database this plugin downloads
-is from the `cppman` repository, which is of course not frequently updated.
+**NOTE**even if you set `index_db_path`, `$XDG_CACHE_HOME/cppman/index.db` will
+be used if it exists, because this one is more likely to be the latest. When
+you run `cppman -r`, `cppman` will rebuild the index database and store it in
+`$XDG_CACHE_HOME/cppman/index.db`. The index database this plugin downloads is
+from the `cppman` repository, which is of course not frequently updated.
 Therefore, **if you do want the latest index database, you should execute
 cppman -r to build one yourself.**
 
 
-==============================================================================
-6. Usage                                                   *cppman.nvim-usage*
+USAGE                                          *cppman.nvim-cppman.nvim-usage*
 
-- `require('cppman').search()`: Search in all manuals. Use `telescope.nvim` if
+- `require('cppman').search()`Search in all manuals. Use `telescope.nvim` if
     available, otherwise use `vim.ui.select()`.
-- `require('cppman').open(keyword)`: find all entries contain keyword, if there
-    is only one entry then directly open it. Otherwise launch a search pane and let
+- `require('cppman').open(keyword)`find all entries contain keyword, if there is
+    only one entry then directly open it. Otherwise launch a search pane and let
     you select one of the related entries.
-- `require('cppman').fetch_index()`: use `curl` to download the latest index
+- `require('cppman').fetch_index()`use `curl` to download the latest index
     database.
-
-==============================================================================
-7. Links                                                   *cppman.nvim-links*
-
-1. **: https://user-images.githubusercontent.com/98312435/256980587-be86148a-1e35-4b2a-85d0-f905782746ab.gif
 
 Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
 
