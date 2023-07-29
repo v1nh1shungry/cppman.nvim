@@ -58,17 +58,3 @@ require('cppman').setup {
 * `require('cppman').open(keyword)`: find all entries contain keyword, if there is only one entry then directly open it. Otherwise launch a search pane and let you select one of the related entries.
 
 * `require('cppman').fetch_index()`: use `curl` to download the latest index database.
-
-# TODO
-
-- [ ] Cross-platform support. I don't use neovim in Windows, and I don't even have a Mac. Sigh.
-  
-  - [ ] Windows
-
-  - [x] Linux
-
-  - [ ] MacOS
-
-  - [x] Platform check: if the platform is not yet supported then give a warning.
-
-- [ ] Compatibility check. For example, `statuscolumn` is available in a recent version.
