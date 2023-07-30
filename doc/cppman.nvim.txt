@@ -16,8 +16,6 @@ Table of Contents                              *cppman.nvim-table-of-contents*
 Search and view the cppreference <https://en.cppreference.com/> manuals on the
 fly, in your favorite editor!
 
-**NOTE**Currently only **Linux** is supported.
-
 
 
 
@@ -79,7 +77,7 @@ CONFIGURATION                          *cppman.nvim-cppman.nvim-configuration*
       position = 'split',
       -- where the index database stores
       -- you can manually set this option to `<cppman-install-directory>/lib/index.db` to avoid downloading
-      index_db_path = vim.fn.stdpath('data') .. '/cppman.db',
+      index_db_path = vim.fs.joinpath(vim.fn.stdpath('data'), 'cppman.db'),
     }
 <
 
