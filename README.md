@@ -2,8 +2,6 @@
 
 Search and view the [cppreference](https://en.cppreference.com/) manuals on the fly, in your favorite editor!
 
-**NOTE**: Currently only **Linux** is supported.
-
 <img src="https://user-images.githubusercontent.com/98312435/256980587-be86148a-1e35-4b2a-85d0-f905782746ab.gif" />
 
 ## ✨ Features
@@ -45,7 +43,7 @@ require('cppman').setup {
   position = 'split',
   -- where the index database stores
   -- you can manually set this option to `<cppman-install-directory>/lib/index.db` to avoid downloading
-  index_db_path = vim.fn.stdpath('data') .. '/cppman.db',
+  index_db_path = vim.fs.joinpath(vim.fn.stdpath('data'), 'cppman.db'),
 }
 ```
 

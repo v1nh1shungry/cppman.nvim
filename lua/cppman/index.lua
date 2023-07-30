@@ -1,10 +1,9 @@
 local M = {}
 local info = require('cppman.utils').info
 
--- TODO: cross-platform support (path joining, plenary.nvim may be useful)
-local cache_home = os.getenv('XDG_CACHE_HOME') or (os.getenv('HOME') .. '/.cache')
-local cache_dir = cache_home .. '/cppman'
-local index_db = cache_dir .. '/index.db'
+local cache_home = os.getenv('XDG_CACHE_HOME') or vim.fs.joinpath(os.getenv('HOME'), '.cache')
+local cache_dir = vim.fs.joinpath(cache_home, 'cppman')
+local index_db = vim.fs.joinpath(cache_dir, 'index.db')
 if vim.fn.filereadable(index_db) == 0 then
   index_db = require('cppman.config').options.index_db_path
 end

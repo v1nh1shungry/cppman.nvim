@@ -2,7 +2,7 @@ local M = {}
 
 M.options = {
   position = 'split',
-  index_db_path = vim.fn.stdpath('data') .. '/cppman.db',
+  index_db_path = vim.fs.joinpath(vim.fn.stdpath('data'), 'cppman.db'),
 }
 
 M.setup = function(opts)

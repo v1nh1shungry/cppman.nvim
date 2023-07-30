@@ -49,7 +49,7 @@ local function cppman(keyword)
       end
     end
     if avail > 0 then
-      vim.cmd.exec("'" .. avail .. " wincmd w'")
+      vim.cmd.exec(string.format("'%d wincmd w'", avail))
     else
       if config.options.position == 'vsplit' then
         vim.cmd.vsplit()
