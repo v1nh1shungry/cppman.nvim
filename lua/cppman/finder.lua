@@ -3,10 +3,9 @@ local display = require('cppman.display')
 local builtin = function(entries)
   vim.ui.select(entries, {
     prompt = 'cppman',
-    format_item = function(entry) return entry.keyword end,
   }, function(choice)
     if choice then
-      display(choice.keyword)
+      display(choice)
     end
   end)
 end
@@ -22,16 +21,7 @@ local telescope = function(entries)
   pickers.new(opts, {
     prompt_title = 'cppman',
     sorter = conf.generic_sorter(opts),
-    finder = finders.new_table {
-      results = entries,
-      entry_maker = function(entry)
-        return {
-          value = entry.keyword,
-          display = entry.keyword,
-          ordinal = entry.keyword,
-        }
-      end,
-    },
+    finder = finders.new_table { results = entries },
     attach_mappings = function(prompt_bufnr, _)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)

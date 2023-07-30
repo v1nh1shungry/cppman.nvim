@@ -20,7 +20,9 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 
 2. Make sure `curl` is available in `$PATH`. Note that `curl` is used to download [the index database](https://raw.githubusercontent.com/aitjcize/cppman/master/cppman/lib/index.db). You can manually download it (if you have already installed `cppman` you can get it from `<cppman-install-directory>/lib/index.db`) and place it in `$HOME/.local/share/nvim/cppman.db` or other directory with [configuration](#Configuration). In this case `curl` is unnecessary.
 
-3. Make sure `cppman` is available in `$PATH`.
+3. Make sure `cppman` is available in `$PATH`. Sure, you're using **CPPMAN**!
+
+4. Make sure `sqlite3` is available in `$PATH`, which is used to query the index database.
 
 ## 📦 Installation
 
@@ -28,10 +30,7 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 ```lua
 {
   'v1nh1shungry/cppman.nvim',
-  dependencies = {
-    'kkharji/sqlite.lua', -- mandatory, used to query the index database
-    'nvim-telescope/telescope.nvim', -- optional, if absent `vim.ui.select` will be used
-  },
+  dependencies = 'nvim-telescope/telescope.nvim', -- optional, if absent `vim.ui.select()` will be used
   opts = {},
 }
 ```
@@ -45,6 +44,7 @@ require('cppman').setup {
   -- can be 'split', 'vsplit' or 'tab'
   position = 'split',
   -- where the index database stores
+  -- you can manually set this option to `<cppman-install-directory>/lib/index.db` to avoid downloading
   index_db_path = vim.fn.stdpath('data') .. '/cppman.db',
 }
 ```

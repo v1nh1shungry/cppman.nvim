@@ -50,14 +50,14 @@ M.open = function(keyword)
   local entries = {}
   keyword = keyword or ''
   for _, entry in ipairs(index.entries) do
-    if string.find(entry.keyword, keyword) then
+    if string.find(entry, keyword) then
       entries[#entries + 1] = entry
     end
   end
   if #entries == 0 then
     require('cppman.utils').miss(keyword)
   elseif #entries == 1 then
-    require('cppman.display')(entries[1].keyword)
+    require('cppman.display')(entries[1])
   else
     finder(entries)
   end

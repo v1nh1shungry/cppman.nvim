@@ -17,15 +17,13 @@ M.setup = function()
   if vim.fn.filereadable(index_db) == 0 then
     M.fetch()
   else
-    local sqlite = require('sqlite')
-    M.entries = sqlite.with_open(index_db, function(db)
-      return db:eval [[
-SELECT t1.title, t2.keyword
-FROM "cppreference.com" AS t1
-JOIN "cppreference.com_keywords" AS t2
-WHERE t1.id = t2.id
-      ]]
-    end)
+    vim.system({
+      'sqlite3',
+      index_db,
+      'SELECT keyword FROM "cppreference.com_keywords";',
+    }, {}, function(res)
+      M.entries = vim.split(res.stdout, '\n')
+    end):wait()
   end
 end
 
