@@ -1,4 +1,4 @@
-*cppman.nvim.txt*          For NVIM >= 0.9.0         Last change: 2023 July 29
+*cppman.nvim.txt*          For NVIM >= 0.9.0         Last change: 2023 July 30
 
 ==============================================================================
 Table of Contents                              *cppman.nvim-table-of-contents*
@@ -47,7 +47,11 @@ get it from `<cppman-install-directory>/lib/index.db`) and place it in
 |cppman.nvim-configuration|. In this case `curl` is unnecessary.
 
 
-3. Make sure `cppman` is available in `$PATH`.
+3. Make sure `cppman` is available in `$PATH`. Sure, you’re using **CPPMAN**!
+
+
+4. Make sure `sqlite3` is available in `$PATH`, which is used to query the index
+database.
 
 
 
@@ -59,10 +63,7 @@ lazy.nvim <https://github.com/folke/lazy.nvim>
 >lua
     {
       'v1nh1shungry/cppman.nvim',
-      dependencies = {
-        'kkharji/sqlite.lua', -- mandatory, used to query the index database
-        'nvim-telescope/telescope.nvim', -- optional, if absent `vim.ui.select` will be used
-      },
+      dependencies = 'nvim-telescope/telescope.nvim', -- optional, if absent `vim.ui.select()` will be used
       opts = {},
     }
 <
@@ -77,6 +78,7 @@ CONFIGURATION                          *cppman.nvim-cppman.nvim-configuration*
       -- can be 'split', 'vsplit' or 'tab'
       position = 'split',
       -- where the index database stores
+      -- you can manually set this option to `<cppman-install-directory>/lib/index.db` to avoid downloading
       index_db_path = vim.fn.stdpath('data') .. '/cppman.db',
     }
 <
