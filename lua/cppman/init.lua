@@ -1,7 +1,7 @@
 local M = {}
-local index = require('cppman.index')
-local finder = require('cppman.finder')
-local error = require('cppman.utils').error
+local finder = require("cppman.finder")
+local index = require("cppman.index")
+local error = require("cppman.utils").error
 
 local has_setup = false
 local check_setup = function()
@@ -14,11 +14,11 @@ end
 
 M.setup = function(opts)
   local os_name = vim.loop.os_uname().sysname
-  if os_name ~= 'Linux' then
-    error(os_name .. ' is not yet supported')
+  if os_name ~= "Linux" then
+    error(os_name .. " is not yet supported")
     return
   end
-  require('cppman.config').setup(opts)
+  require("cppman.config").setup(opts)
   index.setup()
   has_setup = true
 end
@@ -48,16 +48,16 @@ M.open = function(keyword)
     return
   end
   local entries = {}
-  keyword = keyword or ''
+  keyword = keyword or ""
   for _, entry in ipairs(index.entries) do
     if string.find(entry, keyword) then
       entries[#entries + 1] = entry
     end
   end
   if #entries == 0 then
-    require('cppman.utils').miss(keyword)
+    require("cppman.utils").miss(keyword)
   elseif #entries == 1 then
-    require('cppman.display')(entries[1])
+    require("cppman.display")(entries[1])
   else
     finder(entries)
   end

@@ -1,6 +1,6 @@
 -- https://github.com/aitjcize/cppman/blob/master/cppman/lib/cppman.vim
 local setup_highlight = function()
-  vim.cmd [[
+  vim.cmd([[
 syntax clear
 syntax case ignore
 syntax match  manReference       "[a-z_:+-\*][a-z_:+-~!\*<>()]\+ ([1-9][a-z]\=)"
@@ -23,26 +23,26 @@ hi def link manLongOptionDesc  Constant
 hi def link manReference       PreProc
 hi def link manSubHeading      Function
 hi def link manCFuncDefinition Function
-  ]]
+  ]])
 end
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-1122642431
 local get_selection = function()
-  vim.cmd 'noau normal! "vy"'
-  local text = vim.fn.getreg 'v'
-  vim.fn.setreg('v', {})
-  return string.gsub(text, '\n', '')
+  vim.cmd('noau normal! "vy"')
+  local text = vim.fn.getreg("v")
+  vim.fn.setreg("v", {})
+  return string.gsub(text, "\n", "")
 end
 
 -- TODO: Check compatibility, versions
 local function cppman(keyword)
-  local config = require('cppman.config')
+  local config = require("cppman.config")
 
-  if config.options.position == 'tab' then
-    vim.cmd 'tab split'
+  if config.options.position == "tab" then
+    vim.cmd("tab split")
   else
     local avail = -1
-    for i = 1, vim.fn.winnr('$') do
+    for i = 1, vim.fn.winnr("$") do
       local nr = vim.fn.winbufnr(i)
       if vim.b[nr].cppman then
         avail = i
@@ -51,7 +51,7 @@ local function cppman(keyword)
     if avail > 0 then
       vim.cmd.exec(string.format("'%d wincmd w'", avail))
     else
-      if config.options.position == 'vsplit' then
+      if config.options.position == "vsplit" then
         vim.cmd.vsplit()
       else
         vim.cmd.split()
@@ -59,61 +59,61 @@ local function cppman(keyword)
     end
   end
 
-  vim.system({
-    'cppman',
-    '--force-columns=' .. vim.fn.winwidth(0) - 2,
-    keyword
-  }, {}, vim.schedule_wrap(function(r)
-    if string.find(r.stdout, 'No manual entry for') then
-      require('cppman.utils').miss(keyword)
-      return
-    end
-
-    local content = vim.split(r.stdout, '\n')
-    local win = vim.api.nvim_get_current_win()
-
-    local page_uri = 'man://cppman/' .. keyword
-    local buf = -1
-    for _, i in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_get_name(i) == page_uri then
-        buf = i
+  vim.system(
+    {
+      "cppman",
+      "--force-columns=" .. vim.fn.winwidth(0) - 2,
+      keyword,
+    },
+    {},
+    vim.schedule_wrap(function(r)
+      if string.find(r.stdout, "No manual entry for") then
+        require("cppman.utils").miss(keyword)
+        return
       end
-    end
-    if buf < 0 then
-      buf = vim.api.nvim_create_buf(false, true)
-    end
 
-    local bo = vim.bo[buf]
-    local wo = vim.wo[win]
+      local content = vim.split(r.stdout, "\n")
+      local win = vim.api.nvim_get_current_win()
 
-    bo.buftype = 'nofile'
-    bo.swapfile = false
-    bo.bufhidden = 'hide'
-    bo.ft = 'man'
-    bo.readonly = false
-    bo.modifiable = true
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
-    vim.api.nvim_buf_set_name(buf, page_uri)
-    bo.readonly = true
-    bo.modifiable = false
-    vim.b[buf].cppman = true
+      local page_uri = "man://cppman/" .. keyword
+      local buf = -1
+      for _, i in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_get_name(i) == page_uri then
+          buf = i
+        end
+      end
+      if buf < 0 then
+        buf = vim.api.nvim_create_buf(false, true)
+      end
 
-    vim.api.nvim_win_set_buf(win, buf)
-    wo.number = false
-    wo.relativenumber = false
-    wo.signcolumn = 'no'
-    wo.colorcolumn = '0'
-    wo.statuscolumn = ''
+      local bo = vim.bo[buf]
+      local wo = vim.wo[win]
 
-    setup_highlight()
+      bo.buftype = "nofile"
+      bo.swapfile = false
+      bo.bufhidden = "hide"
+      bo.ft = "man"
+      bo.readonly = false
+      bo.modifiable = true
+      vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
+      vim.api.nvim_buf_set_name(buf, page_uri)
+      bo.readonly = true
+      bo.modifiable = false
+      vim.b[buf].cppman = true
 
-    vim.keymap.set('n', 'K', function()
-      cppman(vim.fn.expand('<cword>'))
-    end, { buffer = buf })
-    vim.keymap.set('v', 'K', function()
-      cppman(get_selection())
-    end, { buffer = buf })
-  end))
+      vim.api.nvim_win_set_buf(win, buf)
+      wo.number = false
+      wo.relativenumber = false
+      wo.signcolumn = "no"
+      wo.colorcolumn = "0"
+      wo.statuscolumn = ""
+
+      setup_highlight()
+
+      vim.keymap.set("n", "K", function() cppman(vim.fn.expand("<cword>")) end, { buffer = buf })
+      vim.keymap.set("v", "K", function() cppman(get_selection()) end, { buffer = buf })
+    end)
+  )
 end
 
 return cppman
