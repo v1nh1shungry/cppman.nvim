@@ -1,4 +1,4 @@
-*cppman.nvim.txt*          For NVIM >= 0.9.0         Last change: 2023 July 30
+*cppman.nvim.txt*          For NVIM >= 0.9.0         Last change: 2024 June 14
 
 ==============================================================================
 Table of Contents                              *cppman.nvim-table-of-contents*
