@@ -16,11 +16,10 @@ local telescope = function(entries)
   local conf = require('telescope.config').values
   local actions = require('telescope.actions')
   local action_state = require('telescope.actions.state')
-  local opts = require('telescope.themes').get_dropdown {}
 
-  pickers.new(opts, {
+  pickers.new({}, {
     prompt_title = 'cppman',
-    sorter = conf.generic_sorter(opts),
+    sorter = conf.generic_sorter({}),
     finder = finders.new_table { results = entries },
     attach_mappings = function(prompt_bufnr, _)
       actions.select_default:replace(function()
