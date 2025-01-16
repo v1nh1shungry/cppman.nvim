@@ -1,10 +1,16 @@
 local M = {}
 
-local finder = require("cppman.finder")
+local config = require("cppman.config")
 local index = require("cppman.index")
 
+---@param entries string[]
+local function find(entries)
+  require("cppman.picker")[config.picker](entries)
+end
+
+---@param opts Cppman.Config
 M.setup = function(opts)
-  require("cppman.config").setup(opts)
+  config.setup(opts)
 end
 
 M.fetch_index = function()
@@ -15,26 +21,31 @@ M.search = function()
   if index.is_fetching() then
     return
   end
-  finder(index.entries)
+
+  find(index.entries)
 end
 
+---@param keyword string
 M.open = function(keyword)
   if index.is_fetching() then
     return
   end
-  local entries = {}
+
   keyword = keyword or ""
+
+  local entries = {}
   for _, entry in ipairs(index.entries) do
     if string.find(entry, keyword) then
       entries[#entries + 1] = entry
     end
   end
+
   if #entries == 0 then
     require("cppman.utils").miss(keyword)
   elseif #entries == 1 then
     require("cppman.display")(entries[1])
   else
-    finder(entries)
+    find(entries)
   end
 end
 
