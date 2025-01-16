@@ -76,6 +76,8 @@ local function display(keyword)
 
       setup_highlight()
 
+      vim.api.nvim_win_set_cursor(win, { 1, 0 })
+
       vim.keymap.set("n", "K", function()
         display(vim.fn.expand("<cword>"))
       end, { buffer = buf })
