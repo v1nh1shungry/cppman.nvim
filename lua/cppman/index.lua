@@ -46,6 +46,9 @@ M.fetch = function()
   if M.is_fetching() then
     return
   end
+
+  utils.info("Fetching cppman index...")
+
   job = vim.system(
     {
       "curl",

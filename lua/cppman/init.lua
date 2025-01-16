@@ -4,8 +4,8 @@ local config = require("cppman.config")
 local index = require("cppman.index")
 
 ---@param entries string[]
-local function find(entries)
-  require("cppman.picker")[config.picker](entries)
+local function pick(entries)
+  require("cppman.picker." .. config.picker)(entries)
 end
 
 ---@param opts Cppman.Config
@@ -22,7 +22,7 @@ M.search = function()
     return
   end
 
-  find(index.entries)
+  pick(index.entries)
 end
 
 ---@param keyword string
@@ -45,7 +45,7 @@ M.open = function(keyword)
   elseif #entries == 1 then
     require("cppman.display")(entries[1])
   else
-    find(entries)
+    pick(entries)
   end
 end
 

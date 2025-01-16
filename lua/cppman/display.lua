@@ -34,30 +34,13 @@ local get_selection = function()
   return string.gsub(text, "\n", "")
 end
 
--- TODO: Check compatibility, versions
-local function cppman(keyword)
-  local config = require("cppman.config")
+---@type integer?
+local buf
+---@type integer?
+local win
 
-  if config.position == "tab" then
-    vim.cmd("tab split")
-  else
-    local avail = -1
-    for i = 1, vim.fn.winnr("$") do
-      local nr = vim.fn.winbufnr(i)
-      if vim.b[nr].cppman then
-        avail = i
-      end
-    end
-    if avail > 0 then
-      vim.cmd.exec(string.format("'%d wincmd w'", avail))
-    else
-      if config.position == "vsplit" then
-        vim.cmd.vsplit()
-      else
-        vim.cmd.split()
-      end
-    end
-  end
+local function display(keyword)
+  local config = require("cppman.config")
 
   vim.system(
     {
@@ -65,7 +48,7 @@ local function cppman(keyword)
       "--force-columns=" .. vim.fn.winwidth(0) - 2,
       keyword,
     },
-    {},
+    nil,
     vim.schedule_wrap(function(r)
       if string.find(r.stdout, "No manual entry for") then
         require("cppman.utils").error("No manual for [" .. keyword .. "]")
@@ -73,47 +56,30 @@ local function cppman(keyword)
       end
 
       local content = vim.split(r.stdout, "\n")
-      local win = vim.api.nvim_get_current_win()
 
-      local page_uri = "man://cppman/" .. keyword
-      local buf = -1
-      for _, i in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.api.nvim_buf_get_name(i) == page_uri then
-          buf = i
-        end
-      end
-      if buf < 0 then
+      if not buf or not vim.api.nvim_buf_is_valid(buf) then
         buf = vim.api.nvim_create_buf(false, true)
       end
+      if not win or not vim.api.nvim_win_is_valid(win) then
+        win = vim.api.nvim_open_win(buf, true, config.win_opts)
+      else
+        vim.api.nvim_win_set_buf(win, buf)
+      end
 
-      local bo = vim.bo[buf]
-      local wo = vim.wo[win]
+      local page_uri = "man://cppman/" .. keyword
 
-      bo.buftype = "nofile"
-      bo.swapfile = false
-      bo.bufhidden = "hide"
-      bo.ft = "man"
-      bo.readonly = false
-      bo.modifiable = true
+      vim.bo[buf].ft = "man"
+      vim.bo[buf].modifiable = true
       vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
       vim.api.nvim_buf_set_name(buf, page_uri)
-      bo.readonly = true
-      bo.modifiable = false
-      vim.b[buf].cppman = true
-
-      vim.api.nvim_win_set_buf(win, buf)
-      wo.number = false
-      wo.relativenumber = false
-      wo.signcolumn = "no"
-      wo.colorcolumn = "0"
-      wo.statuscolumn = ""
+      vim.bo[buf].modifiable = false
 
       setup_highlight()
 
-      vim.keymap.set("n", "K", function() cppman(vim.fn.expand("<cword>")) end, { buffer = buf })
-      vim.keymap.set("v", "K", function() cppman(get_selection()) end, { buffer = buf })
+      vim.keymap.set("n", "K", function() display(vim.fn.expand("<cword>")) end, { buffer = buf })
+      vim.keymap.set("v", "K", function() display(get_selection()) end, { buffer = buf })
     end)
   )
 end
 
-return cppman
+return display

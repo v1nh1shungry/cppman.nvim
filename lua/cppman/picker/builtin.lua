@@ -3,7 +3,7 @@ return function(entries)
     prompt = "cppman",
   }, function(choice)
     if choice and vim.trim(choice) ~= "" then
-      require("cppman.disply")(choice)
+      require("cppman.display")(choice)
     end
   end)
 end

@@ -1,4 +1,4 @@
-local os = vim.uv.os_uname()
+local os = vim.uv.os_uname().sysname
 if os ~= "Linux" then
   require("cppman.utils").error(os .. " is not supported")
   return

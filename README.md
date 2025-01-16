@@ -38,12 +38,17 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 ```lua
 -- default
 require('cppman').setup {
-  -- where the manual window displays
-  -- can be 'split', 'vsplit' or 'tab'
-  position = 'split',
+  -- * builtin: `vim.ui.select()`
+  -- * telescope
+  picker = "builtin",
   -- where the index database stores
   -- you can manually set this option to `<cppman-install-directory>/lib/index.db` to avoid downloading
   index_db_path = vim.fs.joinpath(vim.fn.stdpath('data'), 'cppman.db'),
+  -- used in `vim.api.nvim_open_win`
+  win_opts = {
+    split = "below",
+    style = "minimal",
+  },
 }
 ```
 
