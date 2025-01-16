@@ -1,34 +1,42 @@
 local M = {}
-local info = require("cppman.utils").info
 
-local cache_home = os.getenv("XDG_CACHE_HOME") or vim.fs.joinpath(os.getenv("HOME"), ".cache")
-local cache_dir = vim.fs.joinpath(cache_home, "cppman")
-local index_db = vim.fs.joinpath(cache_dir, "index.db")
-if vim.fn.filereadable(index_db) == 0 then
-  index_db = require("cppman.config").index_db_path
-end
+local utils = require("cppman.utils")
 
+local CACHE_HOME = os.getenv("XDG_CACHE_HOME") or vim.fs.joinpath(os.getenv("HOME"), ".cache")
+local CACHE_DIR = vim.fs.joinpath(CACHE_HOME, "cppman")
+
+local index_db_path = vim.fs.joinpath(CACHE_DIR, "index.db")
+index_db_path = vim.fn.filereadable(index_db_path) == 1 and index_db_path or require("cppman.config").index_db_path
+
+---@type vim.SystemObj
 local job = nil
 
+---@type string[]
 M.entries = {}
 
 M.setup = function()
-  if vim.fn.filereadable(index_db) == 0 then
+  if vim.fn.filereadable(index_db_path) == 0 then
     M.fetch()
   else
     vim
       .system({
         "sqlite3",
-        index_db,
+        index_db_path,
         'SELECT keyword FROM "cppreference.com_keywords";',
-      }, {}, function(res) M.entries = vim.split(res.stdout, "\n") end)
+      }, { text = true }, function(res)
+        if res.code ~= 0 then
+          utils.error("Failed to load index: " .. res.stderr)
+        end
+
+        M.entries = vim.split(res.stdout, "\n")
+      end)
       :wait()
   end
 end
 
 M.is_fetching = function()
   if job and not job:is_closing() then
-    info("Fetching the latest index, please wait until it finishes")
+    utils.info("Fetching the latest index, please wait until it finishes")
     return true
   end
   return false
@@ -43,12 +51,12 @@ M.fetch = function()
       "curl",
       "https://raw.githubusercontent.com/aitjcize/cppman/master/cppman/lib/index.db",
       "--output",
-      index_db,
+      index_db_path,
     },
     {},
     vim.schedule_wrap(function(res)
       if res.code == 0 then
-        info("Successfully fetch the latest index")
+        utils.info("Successfully fetch the latest index")
         M.setup()
       else
         require("cppman.utils").error("Can't fetch the index:\n" .. res.stderr)
