@@ -5,7 +5,7 @@ local cache_home = os.getenv("XDG_CACHE_HOME") or vim.fs.joinpath(os.getenv("HOM
 local cache_dir = vim.fs.joinpath(cache_home, "cppman")
 local index_db = vim.fs.joinpath(cache_dir, "index.db")
 if vim.fn.filereadable(index_db) == 0 then
-  index_db = require("cppman.config").options.index_db_path
+  index_db = require("cppman.config").index_db_path
 end
 
 local job = nil

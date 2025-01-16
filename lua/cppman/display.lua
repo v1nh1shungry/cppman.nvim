@@ -38,7 +38,7 @@ end
 local function cppman(keyword)
   local config = require("cppman.config")
 
-  if config.options.position == "tab" then
+  if config.position == "tab" then
     vim.cmd("tab split")
   else
     local avail = -1
@@ -51,7 +51,7 @@ local function cppman(keyword)
     if avail > 0 then
       vim.cmd.exec(string.format("'%d wincmd w'", avail))
     else
-      if config.options.position == "vsplit" then
+      if config.position == "vsplit" then
         vim.cmd.vsplit()
       else
         vim.cmd.split()
