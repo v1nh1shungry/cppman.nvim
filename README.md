@@ -2,7 +2,7 @@
 
 Search and view the [cppreference](https://en.cppreference.com/) manuals on the fly, in your favorite editor!
 
-<img src="https://user-images.githubusercontent.com/98312435/256980587-be86148a-1e35-4b2a-85d0-f905782746ab.gif" />
+![demo](https://user-images.githubusercontent.com/98312435/256980587-be86148a-1e35-4b2a-85d0-f905782746ab.gif)
 
 ## ✨ Features
 
@@ -14,7 +14,7 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 
 ## 📋 Requirements
 
-1. neovim >= 0.9. I haven't had a chance to get a accurate version. I do disable `statuscolumn` in the plugin and don't check the version, and `statuscolumn` is available in a recent version.
+1. neovim >= 0.10. I haven't had a chance to get a accurate version. I do disable `statuscolumn` in the plugin and don't check the version, and `statuscolumn` is available in a recent version.
 
 2. Make sure `curl` is available in `$PATH`. Note that `curl` is used to download [the index database](https://raw.githubusercontent.com/aitjcize/cppman/master/cppman/lib/index.db). You can manually download it (if you have already installed `cppman` you can get it from `<cppman-install-directory>/lib/index.db`) and place it in `$HOME/.local/share/nvim/cppman.db` or other directory with [configuration](#Configuration). In this case `curl` is unnecessary.
 
