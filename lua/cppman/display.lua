@@ -40,7 +40,7 @@ local buf
 local win
 
 local function display(keyword)
-  local config = require("cppman.config")
+  local config = require("cppman.config").get()
 
   vim.system(
     {

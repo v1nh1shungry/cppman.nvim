@@ -27,8 +27,9 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 [lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua
 {
-  'v1nh1shungry/cppman.nvim',
-  dependencies = 'nvim-telescope/telescope.nvim', -- optional, if absent `vim.ui.select()` will be used
+  "v1nh1shungry/cppman.nvim",
+  cmd = "Cppman",
+  dependencies = "nvim-telescope/telescope.nvim", -- optional for telescope picker
   opts = {},
 }
 ```
@@ -56,8 +57,14 @@ require('cppman').setup {
 
 ## 🚀 Usage
 
+## API
+
 * `require('cppman').search()`: Search in all manuals. Use `telescope.nvim` if available, otherwise use `vim.ui.select()`.
 
 * `require('cppman').open(keyword)`: find all entries contain keyword, if there is only one entry then directly open it. Otherwise launch a search pane and let you select one of the related entries.
 
 * `require('cppman').fetch_index()`: use `curl` to download the latest index database.
+
+## Command
+
+* `:Cppman [keyword]`: calling with no argument will act like `search`, otherwise `open`.

@@ -5,7 +5,7 @@ local index = require("cppman.index")
 
 ---@param entries string[]
 local function pick(entries)
-  require("cppman.picker." .. config.picker)(entries)
+  require("cppman.picker." .. config.get().picker)(entries)
 end
 
 ---@param opts Cppman.Config

@@ -5,7 +5,7 @@ local utils = require("cppman.utils")
 ---@field index_db_path string
 ---@field picker "builtin" | "telescope"
 ---@field win_opts vim.api.keyset.win_config
-local M = {
+local conf = {
   index_db_path = vim.fs.joinpath(vim.fn.stdpath("data"), "cppman.db"),
   picker = "builtin",
   win_opts = {
@@ -14,8 +14,10 @@ local M = {
   },
 }
 
+local M = {}
+
 ---@param opts Cppman.Config
-M.setup = function(opts)
+function M.setup(opts)
   opts = opts or {}
   if opts.position then
     utils.warn('"position" field is deprecated, please use "win_opts" instead')
@@ -24,9 +26,13 @@ M.setup = function(opts)
     end
   end
 
-  M = vim.tbl_deep_extend("force", M, opts)
+  conf = vim.tbl_deep_extend("force", conf, opts)
 
-  return M
+  return conf
+end
+
+function M.get()
+  return conf
 end
 
 return M
