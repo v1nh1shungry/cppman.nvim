@@ -41,7 +41,7 @@ M.open = function(keyword)
   end
 
   if #entries == 0 then
-    require("cppman.utils").miss(keyword)
+    require("cppman.utils").error("No manual for [" .. keyword .. "]")
   elseif #entries == 1 then
     require("cppman.display")(entries[1])
   else

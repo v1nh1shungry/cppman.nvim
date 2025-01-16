@@ -68,7 +68,7 @@ local function cppman(keyword)
     {},
     vim.schedule_wrap(function(r)
       if string.find(r.stdout, "No manual entry for") then
-        require("cppman.utils").miss(keyword)
+        require("cppman.utils").error("No manual for [" .. keyword .. "]")
         return
       end
 
