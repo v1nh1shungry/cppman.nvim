@@ -18,7 +18,7 @@ local M = {
 M.setup = function(opts)
   opts = opts or {}
   if opts.position then
-    utils.warn("\"position\" field is deprecated, please use \"win_opts\" instead")
+    utils.warn('"position" field is deprecated, please use "win_opts" instead')
     if opts.position == "tab" then
       utils.error("tabpage position is no longer supported, fallback to split")
     end

@@ -76,8 +76,12 @@ local function display(keyword)
 
       setup_highlight()
 
-      vim.keymap.set("n", "K", function() display(vim.fn.expand("<cword>")) end, { buffer = buf })
-      vim.keymap.set("v", "K", function() display(get_selection()) end, { buffer = buf })
+      vim.keymap.set("n", "K", function()
+        display(vim.fn.expand("<cword>"))
+      end, { buffer = buf })
+      vim.keymap.set("v", "K", function()
+        display(get_selection())
+      end, { buffer = buf })
     end)
   )
 end
