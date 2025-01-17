@@ -26,7 +26,8 @@ M.search = function()
 end
 
 ---@param keyword string
-M.open = function(keyword)
+---@param pick_first? boolean
+M.open = function(keyword, pick_first)
   if index.is_fetching() then
     return
   end
@@ -35,14 +36,14 @@ M.open = function(keyword)
 
   local entries = {}
   for _, entry in ipairs(index.entries) do
-    if string.find(entry, keyword) then
+    if string.find(entry, keyword, 1, true) then
       entries[#entries + 1] = entry
     end
   end
 
   if #entries == 0 then
     require("cppman.utils").error("No manual for [" .. keyword .. "]")
-  elseif #entries == 1 then
+  elseif #entries == 1 or pick_first then
     require("cppman.display")(entries[1])
   else
     pick(entries)

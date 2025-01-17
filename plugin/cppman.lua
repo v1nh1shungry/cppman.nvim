@@ -7,11 +7,10 @@ end
 require("cppman.index").setup()
 
 vim.api.nvim_create_user_command("Cppman", function(args)
-  local nargs = tonumber(args.nargs)
-  if nargs == 0 then
+  if args.args == "" then
     require("cppman").search()
   else
-    require("cppman").open(args.args)
+    require("cppman").open(args.args, true)
   end
 end, {
   bang = false,
