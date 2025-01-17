@@ -26,14 +26,6 @@ hi def link manCFuncDefinition Function
   ]])
 end
 
--- https://github.com/nvim-telescope/telescope.nvim/issues/1923#issuecomment-1122642431
-local get_selection = function()
-  vim.cmd('noau normal! "vy"')
-  local text = vim.fn.getreg("v")
-  vim.fn.setreg("v", {})
-  return string.gsub(text, "\n", "")
-end
-
 ---@type integer?
 local buf
 ---@type integer?
@@ -73,17 +65,11 @@ local function display(keyword)
       vim.api.nvim_buf_set_lines(buf, 0, -1, false, content)
       vim.api.nvim_buf_set_name(buf, page_uri)
       vim.bo[buf].modifiable = false
+      vim.bo[buf].keywordprg = ":Cppman"
 
       setup_highlight()
 
       vim.api.nvim_win_set_cursor(win, { 1, 0 })
-
-      vim.keymap.set("n", "K", function()
-        display(vim.fn.expand("<cword>"))
-      end, { buffer = buf })
-      vim.keymap.set("v", "K", function()
-        display(get_selection())
-      end, { buffer = buf })
     end)
   )
 end

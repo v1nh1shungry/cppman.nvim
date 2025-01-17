@@ -14,13 +14,10 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 
 ## 📋 Requirements
 
-1. neovim >= 0.10. I haven't had a chance to get a accurate version. I do disable `statuscolumn` in the plugin and don't check the version, and `statuscolumn` is available in a recent version.
-
-2. Make sure `curl` is available in `$PATH`. Note that `curl` is used to download [the index database](https://raw.githubusercontent.com/aitjcize/cppman/master/cppman/lib/index.db). You can manually download it (if you have already installed `cppman` you can get it from `<cppman-install-directory>/lib/index.db`) and place it in `$HOME/.local/share/nvim/cppman.db` or other directory with [configuration](#Configuration). In this case `curl` is unnecessary.
-
-3. Make sure `cppman` is available in `$PATH`. Sure, you're using **CPPMAN**!
-
-4. Make sure `sqlite3` is available in `$PATH`, which is used to query the index database.
+1. NVIM >= 0.10.
+2. [cppman](https://github.com/aitjcize/cppman)
+3. `sqlite3`, used to query the index database.
+4. (Optional) `curl`, used to download [the index database](https://raw.githubusercontent.com/aitjcize/cppman/master/cppman/lib/index.db). You can manually download it (if you have already installed `cppman` you can get it from `<cppman-install-directory>/lib/index.db`) and place it in `$HOME/.local/share/nvim/cppman.db` or other directory with [configuration](#Configuration). In this case `curl` is unnecessary.
 
 ## 📦 Installation
 
