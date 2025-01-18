@@ -32,8 +32,6 @@ local buf
 local win
 
 local function display(keyword)
-  local config = require("cppman.config").get()
-
   vim.system(
     {
       "cppman",
@@ -42,7 +40,7 @@ local function display(keyword)
     },
     nil,
     vim.schedule_wrap(function(r)
-      if string.find(r.stdout, "No manual entry for") then
+      if string.find(r.stdout, "No manual entry for", 1, true) then
         require("cppman.utils").error("No manual for [" .. keyword .. "]")
         return
       end
@@ -53,7 +51,7 @@ local function display(keyword)
         buf = vim.api.nvim_create_buf(false, true)
       end
       if not win or not vim.api.nvim_win_is_valid(win) then
-        win = vim.api.nvim_open_win(buf, true, config.win_opts)
+        win = vim.api.nvim_open_win(buf, true, require("cppman.config").win_opts)
       else
         vim.api.nvim_win_set_buf(win, buf)
       end

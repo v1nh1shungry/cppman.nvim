@@ -1,53 +1,65 @@
 local M = {}
 
-local config = require("cppman.config")
-local index = require("cppman.index")
+local conf = require("cppman.config")
+local utils = require("cppman.utils")
 
----@param entries string[]
-local function pick(entries)
-  require("cppman.picker." .. config.get().picker)(entries)
+local LATEST_INDEX_PATH =
+  vim.fs.joinpath(vim.env.XDG_CACHE_HOME or vim.fs.joinpath(vim.env.HOME, ".cache"), "cppman", "index.db")
+
+local index_db_path =
+  vim.fs.normalize(vim.fs.joinpath(vim.fs.dirname(debug.getinfo(1).source:sub(2)), "..", "..", "assets", "index.db"))
+if vim.fn.filereadable(LATEST_INDEX_PATH) == 1 then
+  index_db_path = LATEST_INDEX_PATH
 end
+
+---@type string[]
+local entries = {}
 
 ---@param opts? Cppman.Config
 M.setup = function(opts)
-  config.setup(opts or {})
-  require("cppman.index").setup()
-end
+  conf.setup(opts or {})
 
-M.fetch_index = function()
-  index.fetch()
+  vim
+    .system(
+      {
+        "sqlite3",
+        index_db_path,
+        'SELECT keyword FROM "cppreference.com_keywords";',
+      },
+      nil,
+      function(res)
+        if res.code ~= 0 then
+          utils.error("Failed to load index: " .. res.stderr)
+        end
+
+        entries = vim.split(res.stdout, "\n")
+      end
+    )
+    :wait()
 end
 
 M.search = function()
-  if index.is_fetching() then
-    return
-  end
-
-  pick(index.entries)
+  require("cppman.picker." .. conf.picker)(entries)
 end
 
 ---@param keyword string
 ---@param list_all? boolean
 M.open = function(keyword, list_all)
-  if index.is_fetching() then
-    return
-  end
-
   keyword = keyword or ""
 
-  local entries = {}
-  for _, entry in ipairs(index.entries) do
-    if string.find(entry, keyword, 1, true) then
-      entries[#entries + 1] = entry
-    end
-  end
+  local matches = vim
+    .iter(entries)
+    :filter(function(e)
+      return not not string.find(e, keyword, 1, true)
+    end)
+    :totable()
 
-  if #entries == 0 then
-    require("cppman.utils").error("No manual for [" .. keyword .. "]")
-  elseif #entries == 1 or not list_all then
-    require("cppman.display")(entries[1])
+  if #matches == 0 then
+    utils.error("No manual for [" .. keyword .. "]")
+  elseif #matches == 1 or not list_all then
+    require("cppman.display")(matches[1])
   else
-    pick(entries)
+    require("cppman.picker." .. conf.picker)(entries)
   end
 end
 

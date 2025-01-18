@@ -2,11 +2,9 @@ local utils = require("cppman.utils")
 
 ---@class Cppman.Config
 ---@field position? "split" | "vsplit"
----@field index_db_path string
 ---@field picker "builtin" | "telescope"
 ---@field win_opts vim.api.keyset.win_config
 local conf = {
-  index_db_path = vim.fs.joinpath(vim.fn.stdpath("data"), "cppman.db"),
   picker = "builtin",
   win_opts = {
     split = "below",
@@ -14,25 +12,28 @@ local conf = {
   },
 }
 
-local M = {}
+return setmetatable({
+  ---@param opts Cppman.Config
+  setup = function(opts)
+    if opts.position then
+      utils.warn('"position" field is deprecated, please use "win_opts" instead')
 
----@param opts Cppman.Config
-function M.setup(opts)
-  opts = opts or {}
-  if opts.position then
-    utils.warn('"position" field is deprecated, please use "win_opts" instead')
-    if opts.position == "tab" then
-      utils.error("tabpage position is no longer supported, fallback to split")
+      opts.win_opts = opts.win_opts or {}
+      if opts.position == "split" then
+        opts.win_opts.split = vim.o.splitbelow and "below" or "above"
+      elseif opts.position == "vsplit" then
+        opts.win_opts.split = vim.o.splitright and "right" or "left"
+      elseif opts.position == "tab" then
+        utils.error("tabpage position is no longer supported, fallback to split")
+      end
     end
-  end
 
-  conf = vim.tbl_deep_extend("force", conf, opts)
+    conf = vim.tbl_deep_extend("force", conf, opts)
 
-  return conf
-end
-
-function M.get()
-  return conf
-end
-
-return M
+    return conf
+  end,
+}, {
+  __index = function(_, k)
+    return conf[k]
+  end,
+})
