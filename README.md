@@ -25,9 +25,12 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 ```lua
 {
   "v1nh1shungry/cppman.nvim",
+  -- fetch cppreference keywords index database,
+  -- if you already have one, you can skip it and set yours below.
+  build = ":lua require('cppman').fetch_index()",
   cmd = "Cppman",
   dependencies = "nvim-telescope/telescope.nvim", -- optional for telescope picker
-  opts = {},
+  opts = {}, -- required, `setup()` must be called
 }
 ```
 

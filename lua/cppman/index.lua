@@ -18,9 +18,7 @@ M.setup = function()
   index_db_path = vim.fn.filereadable(index_db_path) == 1 and index_db_path
     or require("cppman.config").get().index_db_path
 
-  if vim.fn.filereadable(index_db_path) == 0 then
-    M.fetch()
-  else
+  if vim.fn.filereadable(index_db_path) == 1 then
     vim
       .system({
         "sqlite3",
@@ -34,6 +32,8 @@ M.setup = function()
         M.entries = vim.split(res.stdout, "\n")
       end)
       :wait()
+  else
+    utils.warn("Index database \"" .. index_db_path .. "\" does not exists")
   end
 end
 

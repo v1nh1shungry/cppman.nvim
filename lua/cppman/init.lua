@@ -10,15 +10,8 @@ end
 
 ---@param opts? Cppman.Config
 M.setup = function(opts)
-  if vim.g.loaded_cppman then
-    return
-  end
-
   config.setup(opts or {})
-
   require("cppman.index").setup()
-
-  vim.g.loaded_cppman = true
 end
 
 M.fetch_index = function()
