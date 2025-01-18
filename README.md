@@ -25,7 +25,10 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 {
   "v1nh1shungry/cppman.nvim",
   cmd = "Cppman",
-  dependencies = "nvim-telescope/telescope.nvim", -- optional for telescope picker
+  dependencies = {
+    "nvim-telescope/telescope.nvim", -- optional for telescope picker
+    "folke/snacks.nvim", -- optional for snacks picker
+  },
   opts = {}, -- required, `setup()` must be called
 }
 ```
@@ -37,6 +40,7 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 require('cppman').setup {
   -- * builtin: `vim.ui.select()`
   -- * telescope
+  -- * snacks (recommended)
   picker = "builtin",
   -- used in `vim.api.nvim_open_win`
   win_opts = {

@@ -2,7 +2,7 @@ local utils = require("cppman.utils")
 
 ---@class Cppman.Config
 ---@field position? "split" | "vsplit"
----@field picker "builtin" | "telescope"
+---@field picker "builtin" | "telescope" | "snacks"
 ---@field win_opts vim.api.keyset.win_config
 local conf = {
   picker = "builtin",

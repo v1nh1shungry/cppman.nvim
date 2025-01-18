@@ -17,8 +17,10 @@ function M.error(msg)
 end
 
 -- https://github.com/aitjcize/cppman/blob/master/cppman/lib/cppman.vim
-local function setup_highlight()
-  vim.cmd([[
+---@param bufnr integer
+function M.highlight(bufnr)
+  vim.api.nvim_buf_call(bufnr, function()
+    vim.cmd([[
 syntax clear
 syntax case ignore
 syntax match  manReference       "[a-z_:+-\*][a-z_:+-~!\*<>()]\+ ([1-9][a-z]\=)"
@@ -42,6 +44,7 @@ hi def link manReference       PreProc
 hi def link manSubHeading      Function
 hi def link manCFuncDefinition Function
   ]])
+  end)
 end
 
 ---@type integer?
@@ -83,7 +86,7 @@ function M.display(keyword)
       vim.bo[buf].modifiable = false
       vim.bo[buf].keywordprg = ":Cppman"
 
-      setup_highlight()
+      M.highlight(buf)
 
       vim.api.nvim_win_set_cursor(win, { 1, 0 })
     end)
