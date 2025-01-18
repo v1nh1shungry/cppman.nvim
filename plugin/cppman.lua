@@ -4,4 +4,4 @@ vim.api.nvim_create_user_command("Cppman", function(args)
   else
     require("cppman").open(args.args)
   end
-end, {})
+end, { nargs = "*" })
