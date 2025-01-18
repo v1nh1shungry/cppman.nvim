@@ -8,9 +8,17 @@ local function pick(entries)
   require("cppman.picker." .. config.get().picker)(entries)
 end
 
----@param opts Cppman.Config
+---@param opts? Cppman.Config
 M.setup = function(opts)
-  config.setup(opts)
+  if vim.g.loaded_cppman then
+    return
+  end
+
+  config.setup(opts or {})
+
+  require("cppman.index").setup()
+
+  vim.g.loaded_cppman = true
 end
 
 M.fetch_index = function()
