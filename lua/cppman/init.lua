@@ -27,8 +27,8 @@ M.search = function()
 end
 
 ---@param keyword string
----@param pick_first? boolean
-M.open = function(keyword, pick_first)
+---@param list_all? boolean
+M.open = function(keyword, list_all)
   if index.is_fetching() then
     return
   end
@@ -44,7 +44,7 @@ M.open = function(keyword, pick_first)
 
   if #entries == 0 then
     require("cppman.utils").error("No manual for [" .. keyword .. "]")
-  elseif #entries == 1 or pick_first then
+  elseif #entries == 1 or not list_all then
     require("cppman.display")(entries[1])
   else
     pick(entries)

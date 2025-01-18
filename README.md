@@ -61,7 +61,7 @@ require('cppman').setup {
 
 * `require('cppman').search()`: Search in all manuals. Use `telescope.nvim` if available, otherwise use `vim.ui.select()`.
 
-* `require('cppman').open(keyword, pick_first?)`: find all entries contain keyword, if there is only one entry or `pick_first` is set then directly open it. Otherwise launch a search pane and let you select one of the related entries.
+* `require('cppman').open(keyword, list_all?)`: find entries contain keyword, if there're multiple matches, the very first one will be picked. Set `list_all` to true can list all matches.
 
 * `require('cppman').fetch_index()`: use `curl` to download the latest index database.
 
