@@ -14,7 +14,7 @@ return function(entries)
         actions.select_default:replace(function()
           actions.close(prompt_bufnr)
           local selection = action_state.get_selected_entry()
-          require("cppman.display")(selection.value)
+          require("cppman.utils").display(selection.value)
         end)
         return true
       end,

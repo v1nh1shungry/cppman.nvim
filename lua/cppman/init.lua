@@ -57,7 +57,7 @@ M.open = function(keyword, list_all)
   if #matches == 0 then
     utils.error("No manual for [" .. keyword .. "]")
   elseif #matches == 1 or not list_all then
-    require("cppman.display")(matches[1])
+    utils.display(matches[1])
   else
     require("cppman.picker." .. conf.picker)(entries)
   end
