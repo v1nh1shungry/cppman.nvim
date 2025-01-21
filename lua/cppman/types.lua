@@ -1,0 +1,21 @@
+---@class cppman.Item
+---@field keyword string
+---@field url string
+---
+---@alias cppman.picker.Action fun(picker: any, item: cppman.Item)
+---
+---@class cppman.picker.Key
+---@field [1] string
+---@field mode string | string[]
+---
+---@class cppman.picker.Opts
+---@field items cppman.Item[]
+---@field confirm cppman.picker.Action
+---@field actions? table<string, cppman.picker.Action>
+---@field keys? table<string, string | cppman.picker.Key>
+---
+---@class cppman.Config
+---@field position? "split" | "vsplit"
+---@field picker "builtin" | "telescope" | "snacks"
+---@field win_opts? vim.api.keyset.win_config
+---@field win vim.api.keyset.win_config

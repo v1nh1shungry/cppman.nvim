@@ -12,10 +12,30 @@ if vim.fn.filereadable(LATEST_INDEX_PATH) == 1 then
   index_db_path = LATEST_INDEX_PATH
 end
 
----@type string[]
-local entries = {}
+---@param items cppman.Item[]
+local function pick(items)
+  local Picker = require("cppman.picker." .. conf.picker)
+  Picker.pick({
+    items = items,
+    ---@param item cppman.Item
+    confirm = function(_, item)
+      utils.display(item.keyword)
+    end,
+    actions = {
+      ---@param item cppman.Item
+      open_in_browser = function(picker, item)
+        Picker.close(picker)
+        vim.ui.open(item.url)
+      end,
+    },
+    keys = { ["<C-o>"] = { "open_in_browser", mode = "i" } },
+  })
+end
 
----@param opts? Cppman.Config
+---@type cppman.Item[]
+local items = {}
+
+---@param opts? cppman.Config
 M.setup = function(opts)
   conf.setup(opts or {})
 
@@ -23,8 +43,13 @@ M.setup = function(opts)
     .system(
       {
         "sqlite3",
+        "-line",
         index_db_path,
-        'SELECT keyword FROM "cppreference.com_keywords";',
+        [[
+        SELECT keyword, url
+        FROM "cppreference.com" AS a, "cppreference.com_keywords" AS b
+        WHERE a.id = b.id;
+        ]],
       },
       nil,
       function(res)
@@ -32,14 +57,27 @@ M.setup = function(opts)
           utils.error("Failed to load index: " .. res.stderr)
         end
 
-        entries = vim.split(res.stdout, "\n")
+        for _, line in ipairs(vim.split(res.stdout, "\n\n", { trimempty = true })) do
+          local lines = vim.split(line, "\n", { trimempty = true })
+          assert(#lines == 2, "Invalid line: " .. line)
+
+          local keyword = string.match(lines[1], "keyword = (.+)")
+          local url = string.match(lines[2], "url = (.+)")
+
+          if keyword and url then
+            table.insert(items, {
+              keyword = keyword,
+              url = url,
+            })
+          end
+        end
       end
     )
     :wait()
 end
 
 M.search = function()
-  require("cppman.picker." .. conf.picker)(entries)
+  pick(items)
 end
 
 ---@param keyword string
@@ -48,7 +86,7 @@ M.open = function(keyword, list_all)
   keyword = keyword or ""
 
   local matches = vim
-    .iter(entries)
+    .iter(items)
     :filter(function(e)
       return not not string.find(e, keyword, 1, true)
     end)
@@ -59,7 +97,7 @@ M.open = function(keyword, list_all)
   elseif #matches == 1 or not list_all then
     utils.display(matches[1])
   else
-    require("cppman.picker." .. conf.picker)(entries)
+    pick(matches)
   end
 end
 

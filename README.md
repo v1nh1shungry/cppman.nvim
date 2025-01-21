@@ -7,10 +7,9 @@ Search and view the [cppreference](https://en.cppreference.com/) manuals on the 
 ## ✨ Features
 
 * View the manuals right inside the neovim.
-
 * Search in all manuals on the fly. What you can expect from [a vscode extension](https://github.com/Guyutongxue/VSC_CppReference) or [a browser extension](https://github.com/huhu/cpp-search-extension) is now available in neovim!
-
 * `K` keymap support. In the manual you can press `K` and jump to the manual for `<cword>`.
+* Open corresponding cppreference page in browser.
 
 ## 📋 Requirements
 
@@ -43,7 +42,7 @@ require('cppman').setup {
   -- * snacks (recommended)
   picker = "builtin",
   -- used in `vim.api.nvim_open_win`
-  win_opts = {
+  win = {
     split = "below",
     style = "minimal",
   },
@@ -63,3 +62,12 @@ require('cppman').setup {
 ## Command
 
 * `:Cppman [keyword]`: calling with no argument will act like `search`, otherwise `open`.
+
+## Picker Keymap
+
+**NOTE: builtin picker does not support any keymap.**
+
+|  Keymap |                                Description                                |
+|:-------:|:-------------------------------------------------------------------------:|
+|  `<CR>` |                            Open manpage in nvim                           |
+| `<C-o>` | Open corresponding cppreference page with default browser (`vim.ui.open`) |

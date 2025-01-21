@@ -52,6 +52,7 @@ local buf
 ---@type integer?
 local win
 
+---@param keyword string
 function M.display(keyword)
   vim.system(
     {
@@ -72,7 +73,7 @@ function M.display(keyword)
         buf = vim.api.nvim_create_buf(false, true)
       end
       if not win or not vim.api.nvim_win_is_valid(win) then
-        win = vim.api.nvim_open_win(buf, true, require("cppman.config").win_opts)
+        win = vim.api.nvim_open_win(buf, true, require("cppman.config").win)
       else
         vim.api.nvim_win_set_buf(win, buf)
       end
