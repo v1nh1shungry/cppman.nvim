@@ -1,4 +1,4 @@
-*cppman.nvim.txt*        For NVIM >= 0.10.0       Last change: 2025 January 18
+*cppman.nvim.txt*        For NVIM >= 0.10.0       Last change: 2025 January 21
 
 ==============================================================================
 Table of Contents                              *cppman.nvim-table-of-contents*
@@ -11,6 +11,7 @@ Table of Contents                              *cppman.nvim-table-of-contents*
   - Usage                                      |cppman.nvim-cppman.nvim-usage|
   - API                                          |cppman.nvim-cppman.nvim-api|
   - Command                                  |cppman.nvim-cppman.nvim-command|
+  - Picker Keymap                      |cppman.nvim-cppman.nvim-picker-keymap|
 2. Links                                                   |cppman.nvim-links|
 
 ==============================================================================
@@ -23,11 +24,9 @@ fly, in your favorite editor!
 FEATURES                                    *cppman.nvim-cppman.nvim-features*
 
 - View the manuals right inside the neovim.
-- Search in all manuals on the fly. What you can expect from a vscode extension
-    <https://github.com/Guyutongxue/VSC_CppReference> or a browser extension
-    <https://github.com/huhu/cpp-search-extension> is now available in neovim!
-- `K` keymap support. In the manual you can press `K` and jump to the manual for
-    `<cword>`.
+- Search in all manuals on the fly. What you can expect from a vscode extension <https://github.com/Guyutongxue/VSC_CppReference> or a browser extension <https://github.com/huhu/cpp-search-extension> is now available in neovim!
+- `K` keymap support. In the manual you can press `K` and jump to the manual for `<cword>`.
+- Open corresponding cppreference page in browser.
 
 
 REQUIREMENTS                            *cppman.nvim-cppman.nvim-requirements*
@@ -64,7 +63,7 @@ CONFIGURATION                          *cppman.nvim-cppman.nvim-configuration*
       -- * snacks (recommended)
       picker = "builtin",
       -- used in `vim.api.nvim_open_win`
-      win_opts = {
+      win = {
         split = "below",
         style = "minimal",
       },
@@ -93,6 +92,19 @@ COMMAND                                      *cppman.nvim-cppman.nvim-command*
 
 - `:Cppman [keyword]`calling with no argument will act like `search`, otherwise `open`.
 
+
+PICKER KEYMAP                          *cppman.nvim-cppman.nvim-picker-keymap*
+
+**NOTE: builtin picker does not support any keymap.**
+
+  ------------------------------------------------------------------------
+   Keymap                            Description
+  -------- ---------------------------------------------------------------
+    <CR>                        Open manpage in nvim
+
+   <C-o>      Open corresponding cppreference page with default browser
+                                    (vim.ui.open)
+  ------------------------------------------------------------------------
 ==============================================================================
 2. Links                                                   *cppman.nvim-links*
 
